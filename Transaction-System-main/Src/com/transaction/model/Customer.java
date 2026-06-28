@@ -21,129 +21,152 @@ public class Customer extends User implements Displayable {
     public String getAccountNumber() { return accountNumber; }
     public double getBalance() { return balance; }
     
-    // ========== DEPOSIT METHODS ==========
+    // ========== DEPOSIT METHODS WITH EXCEPTION HANDLING ==========
     
-    // Version 1: Basic deposit (1 parameter)
+    // Version 1: Basic deposit
     public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-            System.out.println("[OK] Deposited: $" + amount);
-        } else {
-            System.out.println("[ERROR] Amount must be positive!");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
         }
+        balance += amount;
+        System.out.println("[OK] Deposited: $" + amount);
     }
     
-    // Version 2: Receive from another account (4 parameters)
+    // Version 2: Receive from another account
     public void deposit(double amount, String fromAccount, String transactionId, String note) {
-        if (amount > 0) {
-            String depositId = "DEP" + nextDepositId++;
-            balance += amount;
-            System.out.println("\n┌─────────────────────────────────────────────────────────┐");
-            System.out.println("│              RECEIVED MONEY CONFIRMATION                 │");
-            System.out.println("├─────────────────────────────────────────────────────────┤");
-            System.out.println("│ Deposit ID:     " + depositId);
-            System.out.printf("│ Amount:         $%,.2f%n", amount);
-            System.out.println("│ From Account:   " + fromAccount);
-            System.out.println("│ Transaction ID: " + transactionId);
-            System.out.println("│ Note:           " + note);
-            System.out.printf("│ New Balance:    $%,.2f%n", balance);
-            System.out.println("└─────────────────────────────────────────────────────────┘");
-        } else {
-            System.out.println("[ERROR] Amount must be positive!");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
         }
+        if (fromAccount == null || fromAccount.trim().isEmpty()) {
+            throw new IllegalArgumentException("From account cannot be empty!");
+        }
+        if (transactionId == null || transactionId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Transaction ID cannot be empty!");
+        }
+        
+        String depositId = "DEP" + nextDepositId++;
+        balance += amount;
+        System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+        System.out.println("│              RECEIVED MONEY CONFIRMATION                 │");
+        System.out.println("├─────────────────────────────────────────────────────────┤");
+        System.out.println("│ Deposit ID:     " + depositId);
+        System.out.printf("│ Amount:         $%,.2f%n", amount);
+        System.out.println("│ From Account:   " + fromAccount);
+        System.out.println("│ Transaction ID: " + transactionId);
+        System.out.println("│ Note:           " + note);
+        System.out.printf("│ New Balance:    $%,.2f%n", balance);
+        System.out.println("└─────────────────────────────────────────────────────────┘");
     }
     
-    // Version 3: ATM Deposit (5 parameters - different method name)
+    // Version 3: ATM Deposit
     public void depositATM(double amount, String atmId, String atmLocation, String depositType, String envelopeId) {
-        if (amount > 0) {
-            String depositId = "DEP" + nextDepositId++;
-            balance += amount;
-            System.out.println("\n┌─────────────────────────────────────────────────────────┐");
-            System.out.println("│                  ATM DEPOSIT CONFIRMATION                │");
-            System.out.println("├─────────────────────────────────────────────────────────┤");
-            System.out.println("│ Deposit ID:     " + depositId);
-            System.out.printf("│ Amount:         $%,.2f%n", amount);
-            System.out.println("│ ATM ID:         " + atmId);
-            System.out.println("│ ATM Location:   " + atmLocation);
-            System.out.println("│ Deposit Type:   " + depositType);
-            System.out.println("│ Envelope ID:    " + envelopeId);
-            System.out.printf("│ New Balance:    $%,.2f%n", balance);
-            System.out.println("└─────────────────────────────────────────────────────────┘");
-        } else {
-            System.out.println("[ERROR] Amount must be positive!");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
         }
+        if (atmId == null || atmId.trim().isEmpty()) {
+            throw new IllegalArgumentException("ATM ID cannot be empty!");
+        }
+        if (envelopeId == null || envelopeId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Envelope ID cannot be empty!");
+        }
+        
+        String depositId = "DEP" + nextDepositId++;
+        balance += amount;
+        System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+        System.out.println("│                  ATM DEPOSIT CONFIRMATION                │");
+        System.out.println("├─────────────────────────────────────────────────────────┤");
+        System.out.println("│ Deposit ID:     " + depositId);
+        System.out.printf("│ Amount:         $%,.2f%n", amount);
+        System.out.println("│ ATM ID:         " + atmId);
+        System.out.println("│ ATM Location:   " + atmLocation);
+        System.out.println("│ Deposit Type:   " + depositType);
+        System.out.println("│ Envelope ID:    " + envelopeId);
+        System.out.printf("│ New Balance:    $%,.2f%n", balance);
+        System.out.println("└─────────────────────────────────────────────────────────┘");
     }
     
-    // Version 4: Teller Deposit (5 parameters - different method name)
+    // Version 4: Teller Deposit
     public void depositTeller(double amount, String tellerId, String tellerName, String sourceType, String customerSignature) {
-        if (amount > 0) {
-            String depositId = "DEP" + nextDepositId++;
-            balance += amount;
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
+        }
+        if (tellerId == null || tellerId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Teller ID cannot be empty!");
+        }
+        if (customerSignature == null || customerSignature.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer signature is required!");
+        }
+        
+        String depositId = "DEP" + nextDepositId++;
+        balance += amount;
+        System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+        System.out.println("│                TELLER DEPOSIT CONFIRMATION               │");
+        System.out.println("├─────────────────────────────────────────────────────────┤");
+        System.out.println("│ Deposit ID:     " + depositId);
+        System.out.printf("│ Amount:         $%,.2f%n", amount);
+        System.out.println("│ Teller ID:      " + tellerId);
+        System.out.println("│ Teller Name:    " + tellerName);
+        System.out.println("│ Source Type:    " + sourceType);
+        System.out.println("│ Signature:      " + customerSignature);
+        System.out.printf("│ New Balance:    $%,.2f%n", balance);
+        System.out.println("└─────────────────────────────────────────────────────────┘");
+    }
+    
+    // ========== WITHDRAW METHODS WITH EXCEPTION HANDLING ==========
+    
+    // Version 1: Basic withdraw
+    public boolean withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
+        }
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance! Available: $" + balance);
+        }
+        balance -= amount;
+        System.out.println("[OK] Withdrew: $" + amount);
+        return true;
+    }
+    
+    // Version 2: Withdraw with reason
+    public boolean withdrawReason(double amount, String reason) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
+        }
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance! Available: $" + balance);
+        }
+        balance -= amount;
+        System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+        System.out.println("│                  WITHDRAWAL CONFIRMATION                 │");
+        System.out.println("├─────────────────────────────────────────────────────────┤");
+        System.out.printf("│ Amount:         $%,.2f%n", amount);
+        System.out.println("│ Reason:         " + reason);
+        System.out.printf("│ New Balance:    $%,.2f%n", balance);
+        System.out.println("└─────────────────────────────────────────────────────────┘");
+        return true;
+    }
+    
+    // Version 3: Withdraw with receipt
+    public boolean withdrawReceipt(double amount, boolean printReceipt) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0!");
+        }
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance! Available: $" + balance);
+        }
+        balance -= amount;
+        if (printReceipt) {
             System.out.println("\n┌─────────────────────────────────────────────────────────┐");
-            System.out.println("│                TELLER DEPOSIT CONFIRMATION               │");
+            System.out.println("│                  WITHDRAWAL RECEIPT                     │");
             System.out.println("├─────────────────────────────────────────────────────────┤");
-            System.out.println("│ Deposit ID:     " + depositId);
             System.out.printf("│ Amount:         $%,.2f%n", amount);
-            System.out.println("│ Teller ID:      " + tellerId);
-            System.out.println("│ Teller Name:    " + tellerName);
-            System.out.println("│ Source Type:    " + sourceType);
-            System.out.println("│ Signature:      " + customerSignature);
             System.out.printf("│ New Balance:    $%,.2f%n", balance);
+            System.out.println("│ Date/Time:      " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             System.out.println("└─────────────────────────────────────────────────────────┘");
         } else {
-            System.out.println("[ERROR] Amount must be positive!");
-        }
-    }
-    
-    // ========== WITHDRAW METHODS ==========
-    
-    // Version 1: Basic withdraw (1 parameter)
-    public boolean withdraw(double amount) {
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
             System.out.println("[OK] Withdrew: $" + amount);
-            return true;
         }
-        System.out.println("[ERROR] Insufficient balance!");
-        return false;
-    }
-    
-    // Version 2: Withdraw with reason (2 parameters)
-    public boolean withdrawReason(double amount, String reason) {
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
-            System.out.println("\n┌─────────────────────────────────────────────────────────┐");
-            System.out.println("│                  WITHDRAWAL CONFIRMATION                 │");
-            System.out.println("├─────────────────────────────────────────────────────────┤");
-            System.out.printf("│ Amount:         $%,.2f%n", amount);
-            System.out.println("│ Reason:         " + reason);
-            System.out.printf("│ New Balance:    $%,.2f%n", balance);
-            System.out.println("└─────────────────────────────────────────────────────────┘");
-            return true;
-        }
-        System.out.println("[ERROR] Insufficient balance!");
-        return false;
-    }
-    
-    // Version 3: Withdraw with receipt (2 parameters - boolean)
-    public boolean withdrawReceipt(double amount, boolean printReceipt) {
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
-            if (printReceipt) {
-                System.out.println("\n┌─────────────────────────────────────────────────────────┐");
-                System.out.println("│                  WITHDRAWAL RECEIPT                     │");
-                System.out.println("├─────────────────────────────────────────────────────────┤");
-                System.out.printf("│ Amount:         $%,.2f%n", amount);
-                System.out.printf("│ New Balance:    $%,.2f%n", balance);
-                System.out.println("│ Date/Time:      " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                System.out.println("└─────────────────────────────────────────────────────────┘");
-            } else {
-                System.out.println("[OK] Withdrew: $" + amount);
-            }
-            return true;
-        }
-        System.out.println("[ERROR] Insufficient balance!");
-        return false;
+        return true;
     }
     
     public static int getNextAccountNum() {
