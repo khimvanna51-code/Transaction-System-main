@@ -21,7 +21,9 @@ public class Customer extends User implements Displayable {
     public String getAccountNumber() { return accountNumber; }
     public double getBalance() { return balance; }
     
-    // ========== BASIC DEPOSIT (Needed for BankService) ==========
+    // ========== DEPOSIT METHODS ==========
+    
+    // Version 1: Basic deposit (1 parameter)
     public void deposit(double amount) {
         if (amount > 0) {
             balance += amount;
@@ -31,8 +33,8 @@ public class Customer extends User implements Displayable {
         }
     }
     
-    // ========== DEPOSIT METHOD 1: Receive from another account ==========
-    public void depositReceive(double amount, String fromAccount, String transactionId, String note) {
+    // Version 2: Receive from another account (4 parameters)
+    public void deposit(double amount, String fromAccount, String transactionId, String note) {
         if (amount > 0) {
             String depositId = "DEP" + nextDepositId++;
             balance += amount;
@@ -51,7 +53,7 @@ public class Customer extends User implements Displayable {
         }
     }
     
-    // ========== DEPOSIT METHOD 2: ATM Deposit ==========
+    // Version 3: ATM Deposit (5 parameters - different method name)
     public void depositATM(double amount, String atmId, String atmLocation, String depositType, String envelopeId) {
         if (amount > 0) {
             String depositId = "DEP" + nextDepositId++;
@@ -72,7 +74,7 @@ public class Customer extends User implements Displayable {
         }
     }
     
-    // ========== DEPOSIT METHOD 3: Teller Deposit ==========
+    // Version 4: Teller Deposit (5 parameters - different method name)
     public void depositTeller(double amount, String tellerId, String tellerName, String sourceType, String customerSignature) {
         if (amount > 0) {
             String depositId = "DEP" + nextDepositId++;
@@ -93,7 +95,9 @@ public class Customer extends User implements Displayable {
         }
     }
     
-    // ========== BASIC WITHDRAW ==========
+    // ========== WITHDRAW METHODS ==========
+    
+    // Version 1: Basic withdraw (1 parameter)
     public boolean withdraw(double amount) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
@@ -104,7 +108,7 @@ public class Customer extends User implements Displayable {
         return false;
     }
     
-    // ========== WITHDRAW with reason ==========
+    // Version 2: Withdraw with reason (2 parameters)
     public boolean withdrawReason(double amount, String reason) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
@@ -121,7 +125,7 @@ public class Customer extends User implements Displayable {
         return false;
     }
     
-    // ========== WITHDRAW with receipt ==========
+    // Version 3: Withdraw with receipt (2 parameters - boolean)
     public boolean withdrawReceipt(double amount, boolean printReceipt) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;

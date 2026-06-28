@@ -1,7 +1,11 @@
 package com.transaction;
 
+import com.transaction.interfaces.Displayable;
+import com.transaction.model.Admin;
 import com.transaction.model.Customer;
+import com.transaction.model.User;
 import com.transaction.service.BankService;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -10,11 +14,14 @@ public class Main {
     
     public static void main(String[] args) {
         System.out.println("\n+--------------------------------------------------+");
-        System.out.println("|         TRANSACTION SYSTEM - WEEK 7             |");
-        System.out.println("|    Overriding + Overloading Demonstration       |");
+        System.out.println("|         TRANSACTION SYSTEM - WEEK 8             |");
+        System.out.println("|         POLYMORPHISM DEMONSTRATION              |");
         System.out.println("+--------------------------------------------------+");
         
         createSampleData();
+        
+        testClassPolymorphism();
+        testInterfacePolymorphism();
         
         while (true) {
             if (!bank.isLoggedIn()) {
@@ -22,6 +29,48 @@ public class Main {
             } else {
                 showMainMenu();
             }
+        }
+    }
+    
+    private static void testClassPolymorphism() {
+        System.out.println("\n========== CLASS POLYMORPHISM (User Type) ==========\n");
+        
+        Customer sokha = new Customer("sokha", "Sokha Chea", "012345678", 1000, "1234");
+        Customer dara = new Customer("dara", "Dara Pich", "098765432", 500, "1234");
+        Admin admin1 = new Admin("admin1", "System Admin", "099999999", "admin123", 3);
+        
+        ArrayList<User> users = new ArrayList<>();
+        users.add(sokha);
+        users.add(dara);
+        users.add(admin1);
+        
+        System.out.println("Looping through Users (Polymorphism in action!):");
+        System.out.println("Same method call (displayInfo), different results!\n");
+        
+        for (User user : users) {
+            System.out.println("Declared type: User | Actual type: " + user.getClass().getSimpleName());
+            user.displayInfo();
+            System.out.println();
+        }
+    }
+    
+    private static void testInterfacePolymorphism() {
+        System.out.println("\n========== INTERFACE POLYMORPHISM (Displayable Type) ==========\n");
+        
+        Customer sokha = new Customer("sokha", "Sokha Chea", "012345678", 1000, "1234");
+        Admin admin1 = new Admin("admin1", "System Admin", "099999999", "admin123", 3);
+        
+        ArrayList<Displayable> displayItems = new ArrayList<>();
+        displayItems.add(sokha);
+        displayItems.add(admin1);
+        
+        System.out.println("Looping through Displayable items (Polymorphism in action!):");
+        System.out.println("Same method call (displayInfo), different results!\n");
+        
+        for (Displayable item : displayItems) {
+            System.out.println("Declared type: Displayable | Actual type: " + item.getClass().getSimpleName());
+            item.displayInfo();
+            System.out.println();
         }
     }
     
@@ -33,7 +82,9 @@ public class Main {
         System.out.println("|  2. Login                              |");
         System.out.println("|  3. Show All Customers                 |");
         System.out.println("|  4. Show Statistics                    |");
-        System.out.println("|  5. Exit                               |");
+        System.out.println("|  5. Test Polymorphism (Class)          |");
+        System.out.println("|  6. Test Polymorphism (Interface)      |");
+        System.out.println("|  7. Exit                               |");
         System.out.println("+----------------------------------------+");
         System.out.print("\n[?] Choose: ");
         
@@ -45,7 +96,9 @@ public class Main {
             case 2: login(); break;
             case 3: bank.showAllCustomers(); break;
             case 4: bank.showStatistics(); break;
-            case 5: System.out.println("\n[OK] Goodbye!"); System.exit(0); break;
+            case 5: testClassPolymorphism(); break;
+            case 6: testInterfacePolymorphism(); break;
+            case 7: System.out.println("\n[OK] Goodbye!"); System.exit(0); break;
             default: System.out.println("[ERROR] Invalid choice!");
         }
     }
@@ -63,9 +116,11 @@ public class Main {
         System.out.println("|  6. Pending Requests                           |");
         System.out.println("|  7. Approve Request                            |");
         System.out.println("|  8. Change Password                            |");
-        System.out.println("|  9. Deposit Money (3 Ways)                     |");
-        System.out.println("| 10. Withdraw Money                             |");
-        System.out.println("| 11. Logout                                     |");
+        System.out.println("|  9. Deposit Money (4 Ways)                     |");
+        System.out.println("| 10. Withdraw Money (3 Ways)                    |");
+        System.out.println("| 11. Test Polymorphism (Class)                  |");
+        System.out.println("| 12. Test Polymorphism (Interface)              |");
+        System.out.println("| 13. Logout                                     |");
         System.out.println("+--------------------------------------------------+");
         System.out.print("\n[?] Choose: ");
         
@@ -83,7 +138,9 @@ public class Main {
             case 8: changePassword(); break;
             case 9: depositMenu(); break;
             case 10: withdrawMenu(); break;
-            case 11: bank.logout(); break;
+            case 11: testClassPolymorphism(); break;
+            case 12: testInterfacePolymorphism(); break;
+            case 13: bank.logout(); break;
             default: System.out.println("[ERROR] Invalid choice!");
         }
     }
@@ -96,12 +153,13 @@ public class Main {
         }
         
         System.out.println("\n+--------------------------------------------------+");
-        System.out.println("|           DEPOSIT MONEY (3 WAYS)                  |");
+        System.out.println("|           DEPOSIT MONEY (4 WAYS)                  |");
         System.out.println("+--------------------------------------------------+");
-        System.out.println("|  1. Receive from another account (Online)        |");
-        System.out.println("|  2. ATM Deposit (Cash/Check at ATM)              |");
-        System.out.println("|  3. Teller Deposit (Bank Counter)                |");
-        System.out.println("|  4. Back to Menu                                 |");
+        System.out.println("|  1. Basic Deposit (amount only)                  |");
+        System.out.println("|  2. Receive from another account (Online)        |");
+        System.out.println("|  3. ATM Deposit (Cash/Check at ATM)              |");
+        System.out.println("|  4. Teller Deposit (Bank Counter)                |");
+        System.out.println("|  5. Back to Menu                                 |");
         System.out.println("+--------------------------------------------------+");
         System.out.print("\n[?] Choose: ");
         
@@ -113,29 +171,35 @@ public class Main {
                 System.out.print("Enter amount: $");
                 double amount = scanner.nextDouble();
                 scanner.nextLine();
+                current.deposit(amount);
+                break;
+            case 2:
+                System.out.print("Enter amount: $");
+                amount = scanner.nextDouble();
+                scanner.nextLine();
                 System.out.print("From account number: ");
                 String fromAccount = scanner.nextLine();
                 System.out.print("Transaction ID: ");
                 String txId = scanner.nextLine();
                 System.out.print("Note: ");
                 String note = scanner.nextLine();
-                current.depositReceive(amount, fromAccount, txId, note);
+                current.deposit(amount, fromAccount, txId, note);
                 break;
-            case 2:
+            case 3:
                 System.out.print("Enter amount: $");
                 amount = scanner.nextDouble();
                 scanner.nextLine();
-                System.out.print("ATM ID (e.g., ATM001): ");
+                System.out.print("ATM ID: ");
                 String atmId = scanner.nextLine();
                 System.out.print("ATM Location: ");
                 String location = scanner.nextLine();
-                System.out.print("Deposit Type (Cash/Check): ");
+                System.out.print("Deposit Type: ");
                 String depositType = scanner.nextLine();
                 System.out.print("Envelope ID: ");
                 String envelopeId = scanner.nextLine();
                 current.depositATM(amount, atmId, location, depositType, envelopeId);
                 break;
-            case 3:
+            case 4:
                 System.out.print("Enter amount: $");
                 amount = scanner.nextDouble();
                 scanner.nextLine();
@@ -143,13 +207,13 @@ public class Main {
                 String tellerId = scanner.nextLine();
                 System.out.print("Teller Name: ");
                 String tellerName = scanner.nextLine();
-                System.out.print("Source Type (Cash/Check): ");
+                System.out.print("Source Type: ");
                 String source = scanner.nextLine();
                 System.out.print("Signature: ");
                 String signature = scanner.nextLine();
                 current.depositTeller(amount, tellerId, tellerName, source, signature);
                 break;
-            case 4:
+            case 5:
                 return;
             default:
                 System.out.println("[ERROR] Invalid choice!");
@@ -165,7 +229,7 @@ public class Main {
         }
         
         System.out.println("\n+--------------------------------------------------+");
-        System.out.println("|           WITHDRAW MONEY                          |");
+        System.out.println("|           WITHDRAW MONEY (3 WAYS)                 |");
         System.out.println("+--------------------------------------------------+");
         System.out.println("|  1. Basic Withdraw                               |");
         System.out.println("|  2. Withdraw with Reason                         |");
@@ -244,7 +308,7 @@ public class Main {
         System.out.print("Amount: $");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-        System.out.print("Description (or press Enter for no description): ");
+        System.out.print("Description: ");
         String desc = scanner.nextLine();
         
         if (desc.isEmpty()) {
@@ -252,7 +316,6 @@ public class Main {
         } else {
             bank.sendMoney(to, amount, desc);
         }
-        System.out.println("[INFO] New balance: $" + bank.getCurrentCustomer().getBalance());
     }
     
     private static void requestMoney() {
@@ -263,7 +326,7 @@ public class Main {
         System.out.print("Amount: $");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-        System.out.print("Reason (or press Enter for no reason): ");
+        System.out.print("Reason: ");
         String reason = scanner.nextLine();
         
         if (reason.isEmpty()) {
